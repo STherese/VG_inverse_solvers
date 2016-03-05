@@ -16,7 +16,7 @@ for t=1:25,[Vvg(:,t),Mvg(:,t),Xvg] = VG(A,Y(:,t),Gammas(t));end
 [F1measureVG2(rep),TPVG2(rep),FPVG2(rep)] = calc_F1measure(sum(Mvg,2),S);
 
 % teVG
-[gamma_mean1,gamma_median] = teVGGD_wcross2(A,Y); % find sparsity
+[gamma_mean1,gamma_median] = teVGGD_wcross(A,Y); % find sparsity
 [VteVG,XteVG,mteVG,Ffull] = teVGGD(A,Y,gamma_median);
 [F1measureteVG(rep),TPteVG(rep),FPteVG(rep)] = calc_F1measure(repmat(mteVG,1,size(X_true,2)),X_true);
 [F1measureteVG2(rep),TPteVG2(rep),FPteVG2(rep)] = calc_F1measure(mteVG,S);
