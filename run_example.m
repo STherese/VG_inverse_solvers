@@ -30,11 +30,11 @@ MarkoVGact = find(MmarkoVG>0.5);
 
 figure,
 subplot(1,4,1)
-plot(X_true')
+plot(X_true');title('True')
 subplot(1,4,2)
-plot(Vvg')
+plot(Vvg');title('VG')
 subplot(1,4,3)
-plot(VteVG')
+plot(VteVG'),title('teVG')
 subplot(1,4,4)
-plot(VmarkoVG')
+plot(VmarkoVG'),title('MarkoVG')
 drawnow

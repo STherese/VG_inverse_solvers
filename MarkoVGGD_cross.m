@@ -64,7 +64,7 @@ if isfield(opts,'min_gamma') ==0
             [~,M] = MarkoVGGD(A_train,Y_train,p,q,opts);
             Mcross(cf,pair)=sum(sum(M));
         end
-        if mean(Mcross(:,pair))> =0.5; % Check for evidence of activation
+        if mean(Mcross(:,pair))>= 0.5; % Check for evidence of activation
             term = 1;
         end
         
