@@ -3,7 +3,7 @@ function [v,m,x] = VG(A,y,gamma,opts)
 % Description:      Solves the augmented inverse problem: y = A * s * x
 %                   using the Variational Garrote (VG).
 %
-% Input:            Y:  Data matrix of size Kx1
+% Input:            y:  Data matrix of size Kx1
 %                   A:  Design matrix/forward model of size KxN
 %                   gamma:  Sparsity level
 %                   opts:   see 'Settings'
@@ -14,24 +14,13 @@ function [v,m,x] = VG(A,y,gamma,opts)
 %                       high evidence.
 %                   v:  The solution matrix; V = x.*m;
 %--------------------------References--------------------------------------
-% Variational Garrote originally presented in
+% The Variational Garrote was originally presented in
 % Kappen, H. (2011). The Variational Garrote. arXiv Preprint
 % arXiv:1109.0486. Retrieved from http://arxiv.org/abs/1109.0486
 % and
 % Kappen, H.J., & Gómez, V. (2014). The Variational Garrote. Machine
 % Learning, 96(3), 269–294. doi:10.1007/s10994-013-5427-7
 %
-% Time-expanded Variational Garrote reference
-% Hansen, S.T., Stahlhut, C. & Hansen, L.K. (2013). Expansion
-% of the Variational Garrote to a Multiple Measurement Vectors Model. In
-% Twelfth Scandinavian Conference on Artificial Intelligence. ed. / M.
-% Jaeger. IOS Press, (pp. 105–114).
-%
-% teVG with gradient descent
-% Hansen, S.T., & Hansen, L.K. (2015). EEG source reconstruction
-% performance as a function of skull conductance contrast. In 2015 IEEE
-% International Conference on Acoustics, Speech and Signal Processing
-% (ICASSP) (pp. 827–831). IEEE. doi:10.1109/ICASSP.2015.7178085
 %-----------------------------Author---------------------------------------
 % Sofie Therese Hansen, DTU Compute
 % March 2016
@@ -39,8 +28,7 @@ function [v,m,x] = VG(A,y,gamma,opts)
 
 % Settings
 try max_iter = opts.max_iter; catch; max_iter = 1000; end; % Maximum number of iterations
-%try tol = opts.tol; catch; tol = 1e-3; end; % Convergence criterium
-try eta0 = opts.eta0; catch; eta0=0.5; end; % Learning rate for gradient descent
+try eta0 = opts.eta0; catch; eta0=0.5; end; % Learning rate for interpolation
 try updEta = opts.updEta; catch; updEta = 1; end; % Update of learning rate
 try k_beta_conv = opts.k_beta_conv; catch; k_beta_conv = 100; end; % Convergence criterium for beta
 try beta_tol = opts.beta_tol; catch; beta_tol = 1e-3; end; % Convergence criterium for beta

@@ -13,7 +13,7 @@
 % Output:           gamma_mean: Mean optimal gamma.
  %                  gamma_median: Median optimal gamma.
 %--------------------------References--------------------------------------
-% Variational Garrote originally presented in 
+% The Variational Garrote was originally presented in 
 % Kappen, H. (2011). The Variational Garrote. arXiv Preprint
 % arXiv:1109.0486. Retrieved from http://arxiv.org/abs/1109.0486
 % and

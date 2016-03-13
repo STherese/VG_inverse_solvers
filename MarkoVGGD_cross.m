@@ -1,9 +1,9 @@
 function [q,q0,fCross]=MarkoVGGD_cross(A,Y,opts)
 %
-% Description:      Performs cross-validation to estimate the sparsity
-%                   parameter level in the Variational Garrote with a
-%                   Markov prior (MarkoVG) which solves the augmented
-%                   inverse problem: Y = A * S * X.
+% Description:      Performs cross-validation to estimate the parameters
+%                   of the Variational Garrote with a Markov prior
+%                   (MarkoVG) which solves the augmented inverse problem: 
+%                   Y = A * S * X.
 %
 % Input:            Y:  Data matrix of size KxT, where T is the number of
 %                       measurements.
@@ -15,19 +15,18 @@ function [q,q0,fCross]=MarkoVGGD_cross(A,Y,opts)
 %                   q0: Start q-value
 %                   fCross: Free energy on validation sets
 %--------------------------References--------------------------------------
-% Variational Garrote originally presented in 
+% The Variational Garrote was originally presented in 
 % Kappen, H. (2011). The Variational Garrote. arXiv Preprint
 % arXiv:1109.0486. Retrieved from http://arxiv.org/abs/1109.0486
 % and
 % Kappen, H.J., & Gómez, V. (2014). The Variational Garrote. Machine
 % Learning, 96(3), 269–294. doi:10.1007/s10994-013-5427-7
 %
-% Preliminary MarkoVG reference Hansen, S.T., & Hansen, L. (2013). EEG
-% Sequence Imaging: A Markov Prior for the Variational Garrote. Proceedings
-% of the 3rd NIPS Workshop on Machine Learning and Interpretation in
-% Neuroimaging 2013. Retrieved from
+% Preliminary MarkoVG reference 
+% Hansen, S.T., & Hansen, L. (2013). EEG Sequence Imaging: A Markov Prior
+% for the Variational Garrote. Proceedings of the 3rd NIPS Workshop on
+% Machine Learning and Interpretation in Neuroimaging 2013. Retrieved from
 % http://orbit.dtu.dk/fedora/objects/orbit:127330/datastreams/file_61f34d92-2e60-4871-8a41-08f1d69f5c47/content
-
 %-----------------------------Author---------------------------------------
 % Sofie Therese Hansen, DTU Compute
 % March 2016
@@ -49,7 +48,7 @@ try opts.fact = opts.fact; catch;  opts.fact = 0.9; end; % Factor in smoothness=
 rng(5) % Seed for reproducibility
 indices = crossvalind('Kfold', size(Y,1), Cf);
 
-if isfield(opts,'min_gamma') ==0
+if isfield(opts,'min_gamma') ==0 % calculate min_gamma
     qspace = logspace(min_gamma0,max_gamma,n_gamma0);
     disp('Calculating gamma_min')
     Mcross = zeros(1,n_gamma0);
@@ -81,8 +80,8 @@ end
 %%
 disp('Performing cross-validation')
 %mseval=Inf(Cf,n_gamma);
-fCross=Inf(Cf,n_gamma);
-for pair =1:n_gamma;
+fCross = Inf(Cf,n_gamma);
+for pair = 1:n_gamma;
     fprintf('Running parameter pair %d of %d pairs\n',pair,n_gamma);
     q = qspace(pair);
     p = q;
@@ -102,5 +101,5 @@ end
 idx = floor(median(idx));
 q = qspace(idx);
 if idx == n_gamma
-    disp('Max_gamma was chosen')
+    disp('max_gamma was chosen')
 end

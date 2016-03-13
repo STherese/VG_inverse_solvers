@@ -1,4 +1,4 @@
-function [V,X,m,FreeEnergy] = teVGGD(A,Y,gamma,opts)
+function [V,m,X,FreeEnergy] = teVGGD(A,Y,gamma,opts)
 %
 % Description:      Solves the augmented inverse problem: Y = A * s * X
 %                   using the time-expanded Variational Garrote (teVG).
@@ -13,10 +13,10 @@ function [V,X,m,FreeEnergy] = teVGGD(A,Y,gamma,opts)
 %                   m:  Variational mean/expectation of the state 's'.
 %                       Can be thresholded at 0.5 to only keep sources with
 %                       high evidence.
-%                   V:  The solution matrix; V =X.*repmat(m,1,T);
+%                   V:  The solution matrix; V = X.*repmat(m,1,T);
 %                   FreeEnergy: The solution's variational free energy
 %--------------------------References--------------------------------------
-% Variational Garrote originally presented in
+% The Variational Garrote was originally presented in
 % Kappen, H. (2011). The Variational Garrote. arXiv Preprint
 % arXiv:1109.0486. Retrieved from http://arxiv.org/abs/1109.0486
 % and
@@ -49,41 +49,41 @@ try etastart = opts.etastart; catch; etastart=200; end; % When to reset learning
 
 % Initialize
 [K,N] = size(A);
-T=size(Y,2);
-m0=zeros(N,1);
-m0=max(m0,sqrt(eps));
-m0=min(m0,1-sqrt(eps));
-m=m0;
+T = size(Y,2);
+m0 = zeros(N,1);
+m0 = max(m0,sqrt(eps));
+m0 = min(m0,1-sqrt(eps));
+m = m0;
 A = center(A);
 Y = center(Y);
 chi_nn =  1/K*sum(A.^2)';
 C = eye(K)+1/K*A*spdiags(m./(1-m)./chi_nn,0,N,N)*A';
-yhat=C\Y;
-yhaty=yhat.*Y;
+yhat = C\Y;
+yhaty = yhat.*Y;
 beta = T*K/sum(yhaty(:));
 lambda = beta*yhat;
 X = bsxfun(@times, 1./((K*beta)*(1-m).*chi_nn), (A'*lambda));
 X2 = X.^2;
-k=0;term=0;f = zeros(max_iter,1);
-eta=eta0;
+k = 0;term = 0;f = zeros(max_iter,1);
+eta = eta0;
 % Iterate solution until convergence
 while k <max_iter && term==0
-    k=k+1;
-    m=max(m,sqrt(eps));
-    m=min(m,1-sqrt(eps));
+    k = k+1;
+    m = max(m,sqrt(eps));
+    m = min(m,1-sqrt(eps));
     dFdm = beta*K/2*sum(repmat((1-2*m).*chi_nn,1,T).*X2,2)-gamma+log(m./(1-m))-sum(X.*(A'*lambda),2);
     m = m -eta*dFdm;
-    m=max(m,sqrt(eps));
-    m=min(m,1-sqrt(eps));
+    m = max(m,sqrt(eps));
+    m = min(m,1-sqrt(eps));
     C = eye(K)+1/K*A*spdiags(m./(1-m)./chi_nn,0,N,N)*A';
-    yhat=C\Y;
-    yhaty=yhat.*Y;
+    yhat = C\Y;
+    yhaty = yhat.*Y;
     beta = T*K/sum(yhaty(:));
     lambda = beta*yhat;
     X = bsxfun(@times, 1./((K*beta)*(1-m).*chi_nn), (A'*lambda));
     z = Y-1/beta*lambda;
     X2 = X.^2;
-    f(k)=-T*K/2*log(beta/(2*pi))+beta/2*sum(sum((z-Y).^2))...
+    f(k) = -T*K/2*log(beta/(2*pi))+beta/2*sum(sum((z-Y).^2))...
         +K*beta/2*sum(sum(X2.*repmat(chi_nn.*m.*(1-m),1,T)))...
         -gamma*sum(m)+N*log(1+exp(gamma))...
         +sum(m.*log(m)+(1-m).*log(1-m))...
@@ -95,23 +95,23 @@ while k <max_iter && term==0
             term = 1;
         elseif k>100
             if abs(f(k)-f(k-5))<tol && abs(f(k)-f(k-1))<tol
-                term=1;
+                term = 1;
             end
         end
     end
     % Update learning rate
     if term==0 && updEta==1 && k>2
         if f(k)>f(k-1)
-            eta=eta/2;
+            eta = eta/2;
         elseif f(k)<f(k-1)
-            eta=eta*1.1;
+            eta = eta*1.1;
         end
     end
     if k>etastart && k<etastart+350
-        eta=1e-3;
+        eta = 1e-3;
     end
     
 end
 
-FreeEnergy=f(k);
-V= X.*repmat(m,1,T);
+FreeEnergy = f(k);
+V = X.*repmat(m,1,T);

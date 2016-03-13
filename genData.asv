@@ -6,12 +6,13 @@ function [A,Y,X_true,S,IDX,SNR]=genData(A,SNRdes,N0)
 %                   SNRdes: Requested SNR level
 %                   N0:     Number of active sources
 % Output:           Y:      Data matrix of size KxT, where T is the number
-%                           of measurements, e.g., time samples.
+%                           of measurements, e.g. time samples.
 %                   X_true: Activation
 %                   S:      Activation states
 %                   IDX:    Indices of the active sources
 %                   SNR:    SNR of the generated data
 %
+%Makhoul, J., Kubala, F., Schwartz, R., & Weischedel, R. (1999). Performance measures for information extraction. In Proceedings of DARPA Broadcast News Workshop (pp. 249–252). Morgan Kaufmann Pub. Retrieved from http://books.google.com/books?hl=en&lr=&id=uuR3mpBI5ksC&oi=fnd&pg=PA249&dq=Performance+measures+for+information+extraction&ots=DM7xr5TO5V&sig=f7_r_V6OR_OgCWIJgCW_a9PKkuI
 %-----------------------------Author---------------------------------------
 % Sofie Therese Hansen, DTU Compute
 % March 2016
@@ -30,14 +31,17 @@ for s = 1:N0
         Minidx=1;
         %maxFreq=randi([5 15]);
         while length(Minidx)<2 || Minidx(end)-Minidx(1)<2
-            Sx = randn(1,T); % creates white noise
+            Sx = randn(1,T); % create white noise
             [b,a] = butter(2, maxFreq(s)*fs*2); % get band of interest
-            Sx = filtfilt(b, a, Sx); % apply filter
+            Sx = filtfilt(b, a, Sx); % -apply filter
             Minidx = find(abs(Sx)<(max(abs(Sx))*0.05));
         end
+        
         Sx(1:Minidx(1)) = 0;
-        Sx(Minidx(end):end) = 0; 
+        Sx(Minidx(end):end) = 0;
+        
     end
+    
     X_true(IDX(s),:) = Sx;
 end
 X_true(IDX,:) = X_true(IDX,:)./repmat(max(abs(X_true(IDX,:)),[],2),1,25);

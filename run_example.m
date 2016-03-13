@@ -1,23 +1,24 @@
 % Run simple example comparing VG, teVG and MarkoVG
-SNRdes=5;
-K=50;N=500;
-rep=1;
+SNRdes = 5;
+K = 50;N = 500;
+rep = 1;
 rng(rep) % Seed for reprodicibility, change for more examples
-N0=randi([1 4],1);
-[A,Y,X_true,s,IDX,SNR]=genData(randn(K,N),SNRdes,N0);
-actTrue=find(X_true);
-S=zeros(size(X_true,1),1);
-S(IDX)=1;
+N0 = randi([1 4],1);
+[A,Y,X_true,s,IDX,SNR] = genData(randn(K,N),SNRdes,N0);
+actTrue = find(X_true);
+S = zeros(size(X_true,1),1);
+S(IDX) = 1;
 
 % original VG
-Gammas=VG_cross(A,Y);
-for t=1:25,[Vvg(:,t),Mvg(:,t),Xvg] = VG(A,Y(:,t),Gammas(t));end
+Gammas = VG_cross(A,Y);
+Vvg=NaN(size(X_true));Mvg=NaN(size(X_true));Xvg=NaN(size(X_true));
+for t=1:25,[Vvg(:,t),Mvg(:,t),Xvg(:,t)] = VG(A,Y(:,t),Gammas(t));end
 [F1measureVG(rep),TPVG(rep),FPVG(rep)] = calc_F1measure(Mvg,X_true);
 [F1measureVG2(rep),TPVG2(rep),FPVG2(rep)] = calc_F1measure(sum(Mvg,2),S);
 
 % teVG
 [gamma_mean1,gamma_median] = teVGGD_wcross(A,Y); % find sparsity
-[VteVG,XteVG,mteVG,Ffull] = teVGGD(A,Y,gamma_median);
+[VteVG,mteVG,XteVG,Ffull] = teVGGD(A,Y,gamma_median);
 [F1measureteVG(rep),TPteVG(rep),FPteVG(rep)] = calc_F1measure(repmat(mteVG,1,size(X_true,2)),X_true);
 [F1measureteVG2(rep),TPteVG2(rep),FPteVG2(rep)] = calc_F1measure(mteVG,S);
 

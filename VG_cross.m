@@ -12,7 +12,7 @@ function [Gammas] = VG_cross(A,Y,opts)
 %
 % Output:           Gammas: Sparsity levels for each T samples
 %--------------------------References--------------------------------------
-% Variational Garrote originally presented in 
+% The Variational Garrote was originally presented in 
 % Kappen, H. (2011). The Variational Garrote. arXiv Preprint
 % arXiv:1109.0486. Retrieved from http://arxiv.org/abs/1109.0486
 % and
@@ -30,8 +30,7 @@ try min_gamma = opts.min_gamma; catch; min_gamma = -100; end; % Minimum gamma va
 try max_gamma = opts.max_gamma; catch; max_gamma = -1; end; % Maximum gamma value
 try n_gamma = opts.n_gamma; catch; n_gamma = 20; end; % Number of gamma values
 try opts.max_iter = opts.max_iter; catch; opts.max_iter = 500; end; % Maximum number of iterations
-%try tol = opts.tol; catch; opts.tol = 1e-3; end; % Convergence criterium
-try opts.eta0 = opts.eta0; catch; opts.eta0=0.5; end; % Learning rate for gradient descent
+try opts.eta0 = opts.eta0; catch; opts.eta0=0.5; end; % Learning rate for interpolation
 try opts.updEta = opts.updEta; catch; opts.updEta = 1; end; % Update of learning rate
 try Cf = opts.Cf; catch;  Cf=4; end; % Number of folds in the cross-validation
 try opts.k_beta_conv = opts.k_beta_conv; catch; opts.k_beta_conv = 10; end; % Convergence criterium for beta

@@ -107,18 +107,18 @@ while k<max_iter&&term==0
 end
 M = m(:,1:end-1);X = X(:,1:end-1);
 X2 = (X.*X);
-V = X.*M;
-F = calcFreeMarkov(A,Beta(k),Y(:,1:end-1),Ytilde(:,1:end-1),Q,M,X,X2,chi_nn);
+V= X.*M;
+F=calcFreeMarkov(A,Beta(k),Y(:,1:end-1),Ytilde(:,1:end-1),Q,M,X,X2,chi_nn);
 
 if nargout>4
-    T = size(M,2);
+    T=size(M,2);
     Kv = size(opts.A_val,1);
     chi_nn =  1/Kv*sum(opts.A_val.^2)';
-    Ytilde = zeros(size(opts.Y_val));
-    for t = 1:T,
-        AB = opts.A_val.*repmat(((M(:,t)./(1-M(:,t)))./chi_nn)',Kv,1); % del af C
-        BB = eye(Kv)+opts.A_val*AB'/(Kv);
-        Ytilde(:,t) = pinv(BB)*opts.Y_val(:,t);
+    Ytilde=zeros(size(opts.Y_val));
+    for t=1:T,
+        AB=opts.A_val.*repmat(((M(:,t)./(1-M(:,t)))./chi_nn)',Kv,1); % del af C
+        BB=eye(Kv)+opts.A_val*AB'/(Kv);
+        Ytilde(:,t)=pinv(BB)*opts.Y_val(:,t);
     end
-    Fval = calcFreeMarkov(opts.A_val,Beta(k),opts.Y_val,Ytilde,Q,M,X,X2,chi_nn);
+    Fval=calcFreeMarkov(opts.A_val,Beta(k),opts.Y_val,Ytilde,Q,M,X,X2,chi_nn);
 end
