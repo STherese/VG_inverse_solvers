@@ -19,14 +19,17 @@ function [q,q0,fCross]=MarkoVGGD_cross(A,Y,opts)
 % Kappen, H. (2011). The Variational Garrote. arXiv Preprint
 % arXiv:1109.0486. Retrieved from http://arxiv.org/abs/1109.0486
 % and
-% Kappen, H.J., & Gómez, V. (2014). The Variational Garrote. Machine
-% Learning, 96(3), 269–294. doi:10.1007/s10994-013-5427-7
+% Kappen, H.J., & GÃ³mez, V. (2014). The Variational Garrote. Machine
+% Learning, 96(3), 269â€“294. doi:10.1007/s10994-013-5427-7
 %
-% Preliminary MarkoVG reference 
+% MarkoVG reference 
 % Hansen, S.T., & Hansen, L. (2013). EEG Sequence Imaging: A Markov Prior
 % for the Variational Garrote. Proceedings of the 3rd NIPS Workshop on
 % Machine Learning and Interpretation in Neuroimaging 2013. Retrieved from
 % http://orbit.dtu.dk/fedora/objects/orbit:127330/datastreams/file_61f34d92-2e60-4871-8a41-08f1d69f5c47/content
+% and
+% Hansen, S. T., & Hansen, L. K. (2017). Spatio-temporal reconstruction of 
+% brain dynamics from EEG with a Markov prior. NeuroImage, 148, 274-283.
 %-----------------------------Author---------------------------------------
 % Sofie Therese Hansen, DTU Compute
 % March 2016
