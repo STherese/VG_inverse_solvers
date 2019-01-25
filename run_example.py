@@ -36,8 +36,7 @@ plt.plot(np.transpose(X_true[IDX,:]))
 #%% 
 from teVG import *
 gamma=-100 # usually found using cross-validation
-opts=list()
 
-m,V,X,free_energy=teVG(A,Y,gamma,opts)
+m,V,X,free_energy=teVG(A,Y,gamma)
 plt.figure(6)
 plt.plot(np.transpose(V).T)
